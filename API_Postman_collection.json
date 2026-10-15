@@ -1,0 +1,413 @@
+{
+  "info": {
+    "_postman_id": "17e0a729-df0c-4bbe-9803-d98ff1d356a9",
+    "name": "New Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58915902",
+    "_collection_link": "https://go.postman.co/collection/58915902-17e0a729-df0c-4bbe-9803-d98ff1d356a9?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "ServiceNow",
+      "item": [
+        {
+          "name": "Incident_serviceNow",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "password"
+                },
+                {
+                  "key": "client_id",
+                  "value": "136ca5ad46e549ef8801da4c22cede5a"
+                },
+                {
+                  "key": "client_secret",
+                  "value": "aeyN}+wn`aevIaHJ]9(5r4y0fy,mu5jc"
+                },
+                {
+                  "key": "username",
+                  "value": "admin"
+                },
+                {
+                  "key": "password",
+                  "value": "Qf=Nj6$ja1FE"
+                }
+              ]
+            },
+            "url": {
+              "raw": "https://dev400114.service-now.com/oauth_token.do",
+              "protocol": "https",
+              "host": [
+                "dev400114",
+                "service-now",
+                "com"
+              ],
+              "path": [
+                "oauth_token.do"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ChangeRequest_token_sNow",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nlet responseBody = pm.response.json()\r\nconsole.log(\"Response body : \",responseBody)\r\n\r\nlet accessToken = responseBody.access_token\r\nconsole.log(\"AccessToken : \",accessToken)\r\n\r\npm.collectionVariables.set(\"accessToken\", accessToken)"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "password"
+                },
+                {
+                  "key": "client_id",
+                  "value": "136ca5ad46e549ef8801da4c22cede5a"
+                },
+                {
+                  "key": "client_secret",
+                  "value": "aeyN}+wn`aevIaHJ]9(5r4y0fy,mu5jc"
+                },
+                {
+                  "key": "username",
+                  "value": "admin"
+                },
+                {
+                  "key": "password",
+                  "value": "Qf=Nj6$ja1FE"
+                }
+              ]
+            },
+            "url": {
+              "raw": "https://dev400114.service-now.com/oauth_token.do",
+              "protocol": "https",
+              "host": [
+                "dev400114",
+                "service-now",
+                "com"
+              ],
+              "path": [
+                "oauth_token.do"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New_ChangeRequest_Snow",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\nlet responseBody = pm.response.json()\r\nconsole.log(\"responseBody:\",responseBody)\r\nlet sysId = responseBody.result.sys_id\r\nconsole.log(\"System Id :\", sysId)\r\n\r\npm.collectionVariables.set(\"sysId\", sysId)\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"short_description\": \"Laptop not working\",\r\n  \"description\": \"Laptop change Request created from postman\",\r\n  \"comments\": \"Updated via POSTMAN\",\r\n  \"work_notes\": \"Checked mail server logs\",\r\n  \"subcategory\": \"Change request\",\r\n  \"impact\": \"2\",\r\n  \"urgency\": \"2\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dev400114.service-now.com/api/now/table/change_request",
+              "protocol": "https",
+              "host": [
+                "dev400114",
+                "service-now",
+                "com"
+              ],
+              "path": [
+                "api",
+                "now",
+                "table",
+                "change_request"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET_ChangeRequest_sNow",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://dev400114.service-now.com/api/now/table/change_request/{{sysId}}",
+              "protocol": "https",
+              "host": [
+                "dev400114",
+                "service-now",
+                "com"
+              ],
+              "path": [
+                "api",
+                "now",
+                "table",
+                "change_request",
+                "{{sysId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH_ChangeRequest_Snow",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"short_description\": \"Laptop not working - POSTMAN\",\r\n  \"description\": \"Laptop change Request  created and Updated from postman\",\r\n  \"comments\": \"Updated via POSTMAN - PATCH\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dev400114.service-now.com/api/now/table/change_request/{{sysId}}",
+              "protocol": "https",
+              "host": [
+                "dev400114",
+                "service-now",
+                "com"
+              ],
+              "path": [
+                "api",
+                "now",
+                "table",
+                "change_request",
+                "{{sysId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT_ChangeRequest_sNOW",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"short_description\": \"Laptop not working - postman -PUT \",\r\n  \"description\": \"Laptop change Request created and updated from postman -PUT\",\r\n  \"comments\": \"Updated via POSTMAN : PUT\",\r\n  \"work_notes\": \"Checked mail server logs\",\r\n  \"subcategory\": \"Change request\",\r\n  \"impact\": \"3\",\r\n  \"urgency\": \"3\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dev400114.service-now.com/api/now/table/change_request/{{sysId}}",
+              "protocol": "https",
+              "host": [
+                "dev400114",
+                "service-now",
+                "com"
+              ],
+              "path": [
+                "api",
+                "now",
+                "table",
+                "change_request",
+                "{{sysId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete_ChangeRequest_sNow",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 204\", function () {\r\n    pm.response.to.have.status(204);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://dev400114.service-now.com/api/now/table/change_request/{{sysId}}",
+              "protocol": "https",
+              "host": [
+                "dev400114",
+                "service-now",
+                "com"
+              ],
+              "path": [
+                "api",
+                "now",
+                "table",
+                "change_request",
+                "{{sysId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "sysId",
+      "value": ""
+    }
+  ]
+}
